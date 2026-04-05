@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yf.dao.MenuMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.yf.entity.Menu">
+        <id column="menu_id" property="menuId" />
+        <result column="component" property="component" />
+        <result column="path" property="path" />
+        <result column="redirect" property="redirect" />
+        <result column="name" property="name" />
+        <result column="title" property="title" />
+        <result column="icon" property="icon" />
+        <result column="parent_id" property="parentId" />
+        <result column="is_leaf" property="isLeaf" />
+        <result column="hidden" property="hidden" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        menu_id, component, path, redirect, name, title, icon, parent_id, is_leaf, hidden
+    </sql>
+
+    <select id="getMenuListByUserId" resultType="Menu">
+        SELECT
+            distinct a.*
+        FROM x_menu a,
+             x_role_menu b,
+             x_user_role c
+        WHERE a.`menu_id` = b.`menu_id`
+          AND b.`role_id` = c.`role_id`
+          AND a.`parent_id` = #{pid}
+          AND c.`user_id` = #{userId}
+    </select>
+
+
+</mapper>
